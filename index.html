@@ -3,13 +3,13 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {
-        'packages': ['geochart', 'table']
+        'packages': ['geochart', 'controls', 'table']
       });
       google.charts.setOnLoadCallback(drawSheetName);
 
       function drawSheetName() {
-        var queryString = encodeURIComponent('SELECT A,B LIMIT 27');
-
+        var queryString = encodeURIComponent('SELECT A, B, C, D, E, F, G, H, I, J, K, L, M LIMIT 27');
+        
         var query = new google.visualization.Query(
           'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
           encodeURIComponent('gini') + '&headers=1&tq=' + queryString
@@ -24,21 +24,79 @@
         }
 
         var data = response.getDataTable();
+        var dashboard = new google.visualization.Dashboard(
+          document.getElementById('dashboard_div')
+        );
+
+        // Добавляем контроллер для фильтрации по диапазону лет
+        var timeline = new google.visualization.ControlWrapper({
+          'controlType': 'NumberRangeFilter',
+          'containerId': 'filter_div',
+          'options': {
+            'filterColumnLabel': 'Year',
+            'ui': {
+              'minValue': 2010,
+              'maxValue': 2021,
+              'label': 'Year Range'
+            }
+          }
+        });
+
         var geochart = new google.visualization.GeoChart(document.getElementById('chart_div'));
         var options = {
-          region: 'BR',           
+          region: 'BR',  // Отображение карты Бразилии
           displayMode: 'regions',
           resolution: 'provinces',
           colorAxis: {
             colors: ['#acb2b9', '#2f3f4f']
           }
         };
-        geochart.draw(data, options);
+
+        // Функция для вычисления геометрического среднего
+        function calculateGeometricMean(startYear, endYear) {
+          var product = 1;
+          var count = 0;
+
+          // Проходим по строкам (штатам) и по колонкам (годам)
+          for (var i = 1; i < data.getNumberOfRows(); i++) {
+            for (var j = 1; j < data.getNumberOfColumns(); j++) {
+              var year = data.getColumnLabel(j);  // Получаем год из метки колонки
+              if (year >= startYear && year <= endYear) {
+                var giniIndex = data.getValue(i, j);  // Индекс Джини для данного штата в конкретном году
+                product *= giniIndex;
+                count++;
+              }
+            }
+          }
+
+          if (count > 0) {
+            return Math.pow(product, 1 / count);  // Геометрическое среднее
+          } else {
+            return null;
+          }
+        }
+
+        // Слушаем изменение состояния фильтра
+        google.visualization.events.addListener(timeline, 'statechange', function () {
+          var state = timeline.getState();
+          var startYear = state.range.start;
+          var endYear = state.range.end;
+
+          var geometricMean = calculateGeometricMean(startYear, endYear);
+          console.log("Geometric Mean for " + startYear + " to " + endYear + ": " + geometricMean);
+        });
+
+        // Привязываем контроллер и график к dashboard
+        dashboard.bind(timeline, geochart);
+        dashboard.draw(data, options);
       }
     </script>
   </head>
 
   <body>
-    <div id="chart_div" style="width: 900px; height: 400px;"></div>
+    <div id="dashboard_div">
+      <div id="filter_div" style="width: 900px; height: 100px;"></div>
+      <div id="chart_div" style="width: 900px; height: 400px;"></div>
+    </div>
   </body>
 </html>
