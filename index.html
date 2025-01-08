@@ -5,31 +5,12 @@
       google.charts.load('current', {
         'packages': ['geochart', 'table', 'controls']
       });
-      google.charts.setOnLoadCallback(drawSheetName);
-
-      function drawSheetName() {
-        var queryString = encodeURIComponent('SELECT A,B,C'); // Загружаем столбцы Year, State, Gini Index
-
-        var query = new google.visualization.Query(
-          'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
-          encodeURIComponent('Sheet2') + '&headers=1&tq=' + queryString
-        );
-        query.send(handleSampleDataQueryResponse);
-      }
-
-      function handleSampleDataQueryResponse(response) {
-        if (response.isError()) {
-          alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-          return;
-        }
-
-        var data = response.getDataTable();
+      function drawDashBoard() {
         
         var dashboard = new google.visualization.Dashboard(
           document.getElementById('dashboard_div')
         );
 
-        // Создание фильтра по годам, предполагая, что столбец "Year" находится на 0 позиции
         var categoryFilter = new google.visualization.ControlWrapper({
           'controlType': 'CategoryFilter',
           'containerId': 'filter_div',
@@ -47,15 +28,15 @@
         var geochart = new google.visualization.ChartWrapper({
           'chartType': 'GeoChart',
           'containerId': 'chart_div',
+          'dataSourceUrl': 'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
+          encodeURIComponent('Sheet2') + '&headers=1&tq='
+          'query':'SELECT A,B,C'
           'options': {
-            region: 'BR',
-            displayMode: 'regions',
-            resolution: 'provinces',
-            colorAxis: {
-              colors: ['#acb2b9', '#2f3f4f']
-            }   
-          }
-        });
+            'title': 'Gini index'
+            'region': 'BR',
+            'displayMode': 'regions',
+            'resolution': 'provinces'
+        }});
 
         // Связываем фильтр по году и геокарту
         dashboard.bind(categoryFilter, geochart);
@@ -63,7 +44,6 @@
       }
     </script>
   </head>
-
   <body>
     <div id="dashboard_div">
       <div id="filter_div" style="width: 900px; height: 100px;"></div>
