@@ -23,7 +23,7 @@
           return;
         }
         var data = response.getDataTable();
-        console.log(data);
+        
 
         var dashboard = new google.visualization.Dashboard(
           document.getElementById('dashboard_div')
@@ -58,6 +58,7 @@
         geochart.setDataTable(data);
         dashboard.bind(categoryFilter, geochart);
         dashboard.draw(data);
+        console.log(geochart.getChartType());
       }
     </script>
   </head>
