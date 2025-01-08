@@ -23,7 +23,7 @@
           return;
         }
         var data = response.getDataTable();
-        console.log(data);  // Проверяем данные в консоли
+        console.log(data);
 
         var dashboard = new google.visualization.Dashboard(
           document.getElementById('dashboard_div')
@@ -54,13 +54,8 @@
             }
           }
         });
-
-        geochart.setDataTable(data);  // Устанавливаем данные для карты
-
-        // Связываем фильтр и карту
+        geochart.setDataTable(data);
         dashboard.bind(categoryFilter, geochart);
-
-        // Рисуем дашборд
         dashboard.draw(data);
       }
     </script>
