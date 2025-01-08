@@ -24,18 +24,21 @@
         }
 
         var data = response.getDataTable();
-        var dashboard = new google.visualization.Dashboard(
-          document.getElementById('dashboard_div'));
         
-        var timeline = new google.visualization.ControlWrapper({
-          'controlType': 'NumberRangeFilter',
+        var dashboard = new google.visualization.Dashboard(
+          document.getElementById('dashboard_div')
+        );
+
+        // Создаем фильтр по категориям (выбор года)
+        var categoryFilter = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
           'containerId': 'filter_div',
           'options': {
-            'filterColumnLabel': 'Year',
+            'filterColumnLabel': 'Year',  // Используем строку с годами для фильтрации
             'ui': {
-              'minValue': 2010, 
-              'maxValue': 2021,
-              'label': 'Year Range'
+              'label': 'Select Year',
+              'allowTyping': false,
+              'allowMultiple': false
             }
           }
         });
@@ -49,46 +52,9 @@
             colors: ['#acb2b9', '#2f3f4f']
           }
         };
+        dashboard.bind(categoryFilter, geochart);
 
-        // Calculate Geometric Mean
-        function calculateGeometricMean(startYear, endYear) {
-          var product = 1;
-          var count = 0;
-
-          // Индексы Джини лежат в колонках, а годы - в строках
-          for (var i = 1; i < data.getNumberOfColumns(); i++) {  // Begin from index 1 to avoid first column (States)
-            var year = parseInt(data.getColumnLabel(i), 10);  // Get the year from column label
-
-            if (year >= startYear && year <= endYear) {
-              var giniIndex = data.getValue(0, i);  // Get Gini Index for first state
-              product *= giniIndex;
-              count++;
-            }
-          }
-
-          if (count > 0) {
-            return Math.pow(product, 1 / count);  // Return geometric mean
-          } else {
-            return null;  // If no data in selected range
-          }
-        }
-
-        // Bind the timeline filter to the geochart
-        dashboard.bind(timeline, geochart);
-
-        // Now, draw the GeoChart, not the dashboard
-        geochart.draw(data, options);
-
-        // Add event listener to update the geometric mean when filter changes
-        google.visualization.events.addListener(timeline, 'statechange', function () {
-          var state = timeline.getState();
-          var startYear = state.range.start;
-          var endYear = state.range.end;
-
-          var geometricMean = calculateGeometricMean(startYear, endYear);
-          console.log("Geometric Mean for " + startYear + " to " + endYear + ": " + geometricMean);
-        });
-        dashboard.draw(data);
+        dashboard.draw(data, options);
       }
     </script>
   </head>
@@ -96,7 +62,7 @@
   <body>
     <div id="dashboard_div">
       <div id="filter_div" style="width: 900px; height: 100px;"></div>
-      <div id="chart_div" style="width: 900px; height: 800px;"></div>
+      <div id="chart_div" style="width: 900px; height: 400px;"></div>
     </div>
   </body>
 </html>
