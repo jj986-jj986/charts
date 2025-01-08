@@ -44,10 +44,8 @@
         // Карта для отображения индекса Джини
         var geochart = new google.visualization.ChartWrapper({
           'chartType': 'GeoChart',
+          'DataTable': data,
           'containerId': 'chart_div',
-          'dataSourceUrl': 'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
-          encodeURIComponent('Sheet2') + '&headers=1&tq=',
-          'query':'SELECT A,B,C',  // Запрашиваем данные: год, штат, индекс Джини
           'options': {
             'region': 'BR',
             'displayMode': 'regions',
