@@ -5,35 +5,36 @@
       google.charts.load('current', {
         'packages': ['geochart', 'controls']
       });
-      google.charts.setOnLoadCallback(drawSheetName);
+      google.charts.setOnLoadCallback(drawDashBoard);
 
-      function drawSheetName() {
+      function drawDashBoard() {
         var queryString = encodeURIComponent('SELECT A,B,C');
-
         var query = new google.visualization.Query(
           'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
           encodeURIComponent('Sheet2') + '&headers=1&tq=' + queryString
         );
+
         query.send(handleSampleDataQueryResponse);
       }
-          
+
       function handleSampleDataQueryResponse(response) {
         if (response.isError()) {
           alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
           return;
         }
         var data = response.getDataTable();
-        
 
+        // Создаем дашборд
         var dashboard = new google.visualization.Dashboard(
           document.getElementById('dashboard_div')
         );
 
+        // Фильтр для выбора года
         var categoryFilter = new google.visualization.ControlWrapper({
           'controlType': 'CategoryFilter',
           'containerId': 'filter_div',
           'options': {
-            'filterColumnIndex': 0,  // Индекс столбца для фильтрации (год)
+            'filterColumnIndex': 0,  // Индекс столбца для фильтрации по году
             'ui': {
               'label': 'Select Year',
               'allowTyping': false,
@@ -42,6 +43,7 @@
           }
         });
 
+        // Карта с данными
         var geochart = new google.visualization.ChartWrapper({
           'chartType': 'GeoChart',
           'containerId': 'chart_div',
@@ -52,13 +54,21 @@
             'colorAxis': {
               'colors': ['#acb2b9', '#2f3f4f']
             }
-          },
-          'view': {'columns': [1,2]}
+          }
         });
-        geochart.setDataTable(data);
+
+        // Связываем фильтр и график
         dashboard.bind(categoryFilter, geochart);
+
+        // Слушаем изменения ползунка для обновления данных
+        document.getElementById('yearSlider').addEventListener('input', function() {
+          var year = this.value;
+          // Обновляем фильтр Google Charts
+          categoryFilter.setState({ 'selectedValues': [year] });
+          dashboard.draw(data);
+        });
+
         dashboard.draw(data);
-        console.log(geochart.getChartType());
       }
     </script>
   </head>
@@ -67,5 +77,8 @@
       <div id="filter_div" style="width: 900px; height: 100px;"></div>
       <div id="chart_div" style="width: 900px; height: 400px;"></div>
     </div>
+    <label for="yearSlider">Year:</label>
+    <input type="range" id="yearSlider" min="2010" max="2021" value="2010">
+    <span id="yearValue">2010</span>
   </body>
 </html>
