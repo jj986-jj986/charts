@@ -28,8 +28,8 @@
           document.getElementById('dashboard_div')
         );
 
-        // Добавляем контроллер для фильтрации по диапазону лет
-        var timeline = new google.visualization.ControlWrapper({
+        // Создаем контроллер для фильтра по диапазону чисел
+        var rangeSlider = new google.visualization.ControlWrapper({
           'controlType': 'NumberRangeFilter',
           'containerId': 'filter_div',
           'options': {
@@ -77,8 +77,8 @@
         }
 
         // Слушаем изменение состояния фильтра
-        google.visualization.events.addListener(timeline, 'statechange', function () {
-          var state = timeline.getState();
+        google.visualization.events.addListener(rangeSlider, 'statechange', function () {
+          var state = rangeSlider.getState();
           var startYear = state.range.start;
           var endYear = state.range.end;
 
@@ -87,7 +87,7 @@
         });
 
         // Привязываем контроллер и график к dashboard
-        dashboard.bind(timeline, geochart);
+        dashboard.bind(rangeSlider, geochart);
         dashboard.draw(data, options);
       }
     </script>
