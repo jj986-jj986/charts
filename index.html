@@ -3,12 +3,12 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {
-        'packages': ['geochart', 'controls', 'table']
+        'packages': ['geochart', 'table']
       });
       google.charts.setOnLoadCallback(drawSheetName);
 
       function drawSheetName() {
-        var queryString = encodeURIComponent('SELECT A,B,C,D,E,F,G,H,I,J,K,L,M LIMIT 27');
+        var queryString = encodeURIComponent('SELECT A,B LIMIT 27');
 
         var query = new google.visualization.Query(
           'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
@@ -24,44 +24,21 @@
         }
 
         var data = response.getDataTable();
-        
-        var dashboard = new google.visualization.Dashboard(
-          document.getElementById('dashboard_div'));
-
-        var rangeSlider = new google.visualization.ControlWrapper({
-          'controlType': 'ChartRangeFilter',
-          'containerId': 'filter_div',
-          'options': {
-            'filterColumnLabel': 'Year',  // Убедись, что в таблице есть колонка с названием "Year"
-            'ui': {
-               'minRangeSize': 1 
-            }
-          },
-          'state': {'range': {'start': 2010, 'end': 2010}}
-        });
-
         var geochart = new google.visualization.GeoChart(document.getElementById('chart_div'));
         var options = {
-          region: 'BR',
+          region: 'BR',           
           displayMode: 'regions',
           resolution: 'provinces',
           colorAxis: {
             colors: ['#acb2b9', '#2f3f4f']
           }
         };
-
-        dashboard.bind(rangeSlider, geochart);
-        dashboard.draw(data, options);
+        geochart.draw(data, options);
       }
     </script>
   </head>
 
   <body>
-    <div id="dashboard_div">
-      <!-- Div для фильтра -->
-      <div id="filter_div" style="width: 900px; height: 100px;"></div>
-      <!-- Div для карты -->
-      <div id="chart_div" style="width: 900px; height: 400px;"></div>
-    </div>
+    <div id="chart_div" style="width: 900px; height: 400px;"></div>
   </body>
 </html>
