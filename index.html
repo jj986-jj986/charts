@@ -8,7 +8,7 @@
       google.charts.setOnLoadCallback(drawSheetName);
 
       function drawSheetName() {
-        var queryString = encodeURIComponent('SELECT A,B LIMIT 27 OFFSET 1');
+        var queryString = encodeURIComponent('SELECT A,B LIMIT 27');
 
         var query = new google.visualization.Query(
           'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
