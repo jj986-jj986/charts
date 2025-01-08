@@ -5,6 +5,8 @@
       google.charts.load('current', {
         'packages': ['geochart', 'table', 'controls']
       });
+      google.charts.setOnLoadCallback(drawDashBoard); // Вызов функции отрисовки после загрузки
+
       function drawDashBoard() {
         
         var dashboard = new google.visualization.Dashboard(
@@ -31,14 +33,18 @@
           encodeURIComponent('Sheet2') + '&headers=1&tq=',
           'query':'SELECT A,B,C',
           'options': {
-            'title': 'Gini index'
+            'title': 'Gini index',  // Запятая после 'title': 'Gini index'
             'region': 'BR',
             'displayMode': 'regions',
             'resolution': 'provinces'
-        }
-      });
+          }
+        });
+
+        // Связываем фильтр и карту
         dashboard.bind(categoryFilter, geochart);
-        dashboard.draw(data)
+        
+        // Рисуем дашборд (переменная data не нужна)
+        dashboard.draw(geochart.getDataTable());
       }
     </script>
   </head>
