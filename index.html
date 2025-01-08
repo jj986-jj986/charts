@@ -63,7 +63,7 @@
           var year = this.value;
           // Обновляем фильтр Google Charts с выбранным годом
           categoryFilter.setState({ 'selectedValues': [year] });
-          dashboard.draw(data);  // Рисуем обновлённый дашборд
+          dashboard.draw(data); 
         });
 
         dashboard.draw(data);
@@ -72,6 +72,7 @@
   </head>
   <body>
     <div id="dashboard_div">
+      <div id="filter_div" style="width: 900px; height: 100px;"></div>
       <div id="chart_div" style="width: 900px; height: 400px;"></div>
     </div>
     <label for="yearSlider">Year:</label>
