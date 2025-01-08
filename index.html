@@ -8,11 +8,11 @@
       google.charts.setOnLoadCallback(drawSheetName);
 
       function drawSheetName() {
-        var queryString = encodeURIComponent('SELECT A,B,C,D,E,F,G,H,I,J,K,L,M LIMIT 27');
+        var queryString = encodeURIComponent('SELECT A,B,C'); // Загружаем столбцы Year, State, Gini Index
 
         var query = new google.visualization.Query(
           'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
-          encodeURIComponent('gini') + '&headers=1&tq=' + queryString
+          encodeURIComponent('Sheet2') + '&headers=1&tq=' + queryString
         );
         query.send(handleSampleDataQueryResponse);
       }
@@ -28,11 +28,13 @@
         var dashboard = new google.visualization.Dashboard(
           document.getElementById('dashboard_div')
         );
+
+        // Создание фильтра по годам, предполагая, что столбец "Year" находится на 0 позиции
         var categoryFilter = new google.visualization.ControlWrapper({
           'controlType': 'CategoryFilter',
           'containerId': 'filter_div',
           'options': {
-            'filterColumnLabel': 'Year',  // Используем строку с годами для фильтрации
+            'filterColumnIndex': 0,  // Указываем индекс столбца для года
             'ui': {
               'label': 'Select Year',
               'allowTyping': false,
@@ -41,19 +43,23 @@
           }
         });
 
+        // Создание геокарты, отображающей штаты и индекс Джини
         var geochart = new google.visualization.ChartWrapper({
-           'chartType': 'Geochart',
+          'chartType': 'GeoChart',
           'containerId': 'chart_div',
           'options': {
             region: 'BR',
             displayMode: 'regions',
             resolution: 'provinces',
             colorAxis: {
-            colors: ['#acb2b9', '#2f3f4f']
-          }   
-        }});
-        dashboard.bind(categoryFilter, geochart)
-        dashboard.draw(data)
+              colors: ['#acb2b9', '#2f3f4f']
+            }   
+          }
+        });
+
+        // Связываем фильтр по году и геокарту
+        dashboard.bind(categoryFilter, geochart);
+        dashboard.draw(data);
       }
     </script>
   </head>
