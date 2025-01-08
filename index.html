@@ -28,8 +28,6 @@
         var dashboard = new google.visualization.Dashboard(
           document.getElementById('dashboard_div')
         );
-
-        // Создаем фильтр по категориям (выбор года)
         var categoryFilter = new google.visualization.ControlWrapper({
           'controlType': 'CategoryFilter',
           'containerId': 'filter_div',
@@ -43,18 +41,19 @@
           }
         });
 
-        var geochart = new google.visualization.GeoChart(document.getElementById('chart_div'));
-        var options = {
-          region: 'BR',           
-          displayMode: 'regions',
-          resolution: 'provinces',
-          colorAxis: {
+        var geochart = new google.visualization.ChartWrapper({
+           'chartType': 'Geochart',
+          'containerId': 'chart_div',
+          'options': {
+            region: 'BR',
+            displayMode: 'regions',
+            resolution: 'provinces',
+            colorAxis: {
             colors: ['#acb2b9', '#2f3f4f']
-          }
+          }   
         };
         dashboard.bind(categoryFilter, geochart);
-
-        dashboard.draw(data, options);
+        dashboart.draw(data);
       }
     </script>
   </head>
