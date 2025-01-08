@@ -24,23 +24,21 @@
           }
         });
 
-        // Создание геокарты, отображающей штаты и индекс Джини
         var geochart = new google.visualization.ChartWrapper({
           'chartType': 'GeoChart',
           'containerId': 'chart_div',
           'dataSourceUrl': 'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
           encodeURIComponent('Sheet2') + '&headers=1&tq=',
-          'query':'SELECT A,B,C'
+          'query':'SELECT A,B,C',
           'options': {
             'title': 'Gini index'
             'region': 'BR',
             'displayMode': 'regions',
             'resolution': 'provinces'
-        }});
-
-        // Связываем фильтр по году и геокарту
+        }
+      });
         dashboard.bind(categoryFilter, geochart);
-        dashboard.draw(data);
+        dashboard.draw(data)
       }
     </script>
   </head>
