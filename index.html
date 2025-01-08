@@ -5,7 +5,7 @@
       google.charts.load('current', {
         'packages': ['geochart', 'controls']
       });
-       google.charts.setOnLoadCallback(drawSheetName);
+      google.charts.setOnLoadCallback(drawSheetName);
 
       function drawSheetName() {
         var queryString = encodeURIComponent('SELECT A,B,C');
@@ -23,7 +23,8 @@
           return;
         }
         var data = response.getDataTable();
-        console.log(data)
+        console.log(data);  // Проверяем данные в консоли
+
         var dashboard = new google.visualization.Dashboard(
           document.getElementById('dashboard_div')
         );
@@ -41,10 +42,8 @@
           }
         });
 
-        // Карта для отображения индекса Джини
         var geochart = new google.visualization.ChartWrapper({
           'chartType': 'GeoChart',
-          'DataTable': data,
           'containerId': 'chart_div',
           'options': {
             'region': 'BR',
@@ -56,14 +55,13 @@
           }
         });
 
-
-
+        geochart.setDataTable(data);  // Устанавливаем данные для карты
 
         // Связываем фильтр и карту
         dashboard.bind(categoryFilter, geochart);
 
         // Рисуем дашборд
-        dashboard.draw();
+        dashboard.draw(data);
       }
     </script>
   </head>
