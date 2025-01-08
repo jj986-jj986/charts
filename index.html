@@ -88,6 +88,7 @@
           var geometricMean = calculateGeometricMean(startYear, endYear);
           console.log("Geometric Mean for " + startYear + " to " + endYear + ": " + geometricMean);
         });
+        dashboard.draw(data);
       }
     </script>
   </head>
@@ -95,7 +96,7 @@
   <body>
     <div id="dashboard_div">
       <div id="filter_div" style="width: 900px; height: 100px;"></div>
-      <div id="chart_div" style="width: 900px; height: 400px;"></div>
+      <div id="chart_div" style="width: 900px; height: 800px;"></div>
     </div>
   </body>
 </html>
