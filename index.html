@@ -1,6 +1,51 @@
 <html>
   <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+      /* Стили для ползунка */
+      #yearSlider {
+        width: 300px;
+        height: 10px;
+        background-color: #ddd;
+        border-radius: 5px;
+        outline: none;
+        transition: background-color 0.3s;
+      }
+
+      #yearSlider:hover {
+        background-color: #bbb;
+      }
+
+      #yearSlider::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #4CAF50;
+        cursor: pointer;
+      }
+
+      #yearSlider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #4CAF50;
+        cursor: pointer;
+      }
+
+      /* Стили для текста фильтра */
+      label {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      /* Стили для отображения года */
+      #yearValue {
+        font-size: 16px;
+        font-weight: bold;
+        color: #4CAF50;
+        margin-left: 10px;
+      }
+    </style>
     <script type="text/javascript">
       google.charts.load('current', {
         'packages': ['geochart', 'controls']
@@ -75,8 +120,8 @@
       <div id="filter_div" style="width: 900px; height: 100px;"></div>
       <div id="chart_div" style="width: 900px; height: 400px;"></div>
     </div>
-    <label for="yearSlider">Year:</label>
+    <label for="yearSlider">Year: 2010</label>
     <input type="range" id="yearSlider" min="2010" max="2021" value="2010">
-    <span id="yearValue">2010</span>
+    <span id="yearValue">2021</span>
   </body>
 </html>
