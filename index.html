@@ -3,7 +3,9 @@
     <!-- Подключаем только loader.js -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', { packages: ['corechart'] });
+      google.charts.load('current', {
+        'packages': ['geochart', 'table']
+      });
       google.charts.setOnLoadCallback(drawSheetName);
 
       function drawSheetName() {
@@ -23,8 +25,18 @@
         }
 
         var data = response.getDataTable();
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-        chart.draw(data, { height: 400 });
+        var geochart = new google.visualization.GeoChart(document.getElementById('chart_div'));
+        var options = {
+          region: 'BR',
+          displayMode: 'regions',
+          resolution: 'provinces',
+          height: '800px',
+          weight: '800px'
+          colorAxis: {
+            colors: ['#acb2b9', '#2f3f4f']
+          }
+        };
+        geochart.draw(data, options);
       }
     </script>
   </head>
