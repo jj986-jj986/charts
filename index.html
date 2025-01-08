@@ -1,6 +1,5 @@
 <html>
   <head>
-    <!-- Подключаем только loader.js -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {
@@ -9,7 +8,7 @@
       google.charts.setOnLoadCallback(drawSheetName);
 
       function drawSheetName() {
-        var queryString = encodeURIComponent('SELECT A,B LIMIT 5 OFFSET 1');
+        var queryString = encodeURIComponent('SELECT A,B LIMIT 27 OFFSET 1');
 
         var query = new google.visualization.Query(
           'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
@@ -27,11 +26,9 @@
         var data = response.getDataTable();
         var geochart = new google.visualization.GeoChart(document.getElementById('chart_div'));
         var options = {
-          region: 'BR',
+          region: 'BR',           
           displayMode: 'regions',
           resolution: 'provinces',
-          height: '800px',
-          weight: '800px'
           colorAxis: {
             colors: ['#acb2b9', '#2f3f4f']
           }
@@ -42,7 +39,6 @@
   </head>
 
   <body>
-    <!-- Убедитесь, что div задан с правильным id -->
     <div id="chart_div" style="width: 900px; height: 400px;"></div>
   </body>
 </html>
