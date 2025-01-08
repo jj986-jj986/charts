@@ -5,14 +5,29 @@
       google.charts.load('current', {
         'packages': ['geochart', 'controls']
       });
-      google.charts.setOnLoadCallback(drawDashBoard); // Вызов функции отрисовки после загрузки
+       google.charts.setOnLoadCallback(drawSheetName);
 
-      function drawDashBoard() {
+      function drawSheetName() {
+        var queryString = encodeURIComponent('SELECT A,B,C');
+
+        var query = new google.visualization.Query(
+          'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
+          encodeURIComponent('Sheet2') + '&headers=1&tq=' + queryString
+        );
+        query.send(handleSampleDataQueryResponse);
+      }
+          
+      function handleSampleDataQueryResponse(response) {
+        if (response.isError()) {
+          alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+          return;
+        }
+        var data = response.getDataTable();
+        console.log(data)
         var dashboard = new google.visualization.Dashboard(
           document.getElementById('dashboard_div')
         );
 
-        // Фильтр для выбора года
         var categoryFilter = new google.visualization.ControlWrapper({
           'controlType': 'CategoryFilter',
           'containerId': 'filter_div',
@@ -42,8 +57,8 @@
             }
           }
         });
-        geochart.setQuery('SELECT A,B,C');
-console.log(geochart.getDataTable());
+
+
 
 
         // Связываем фильтр и карту
