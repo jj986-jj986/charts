@@ -5,15 +5,15 @@
       google.charts.load('current', {
         'packages': ['geochart', 'controls']
       });
-      google.charts.setOnLoadCallback(drawDashBoard);
+      google.charts.setOnLoadCallback(drawSheetName);
 
-      function drawDashBoard() {
+      function drawSheetName() {
         var queryString = encodeURIComponent('SELECT A,B,C');
+
         var query = new google.visualization.Query(
           'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
           encodeURIComponent('Sheet2') + '&headers=1&tq=' + queryString
         );
-
         query.send(handleSampleDataQueryResponse);
       }
 
@@ -24,12 +24,10 @@
         }
         var data = response.getDataTable();
 
-        // Создаем дашборд
         var dashboard = new google.visualization.Dashboard(
           document.getElementById('dashboard_div')
         );
 
-        // Фильтр для выбора года
         var categoryFilter = new google.visualization.ControlWrapper({
           'controlType': 'CategoryFilter',
           'containerId': 'filter_div',
@@ -43,7 +41,6 @@
           }
         });
 
-        // Карта с данными
         var geochart = new google.visualization.ChartWrapper({
           'chartType': 'GeoChart',
           'containerId': 'chart_div',
@@ -54,18 +51,19 @@
             'colorAxis': {
               'colors': ['#acb2b9', '#2f3f4f']
             }
-          }
+          },
+          'view': {'columns': [1,2]}
         });
 
-        // Связываем фильтр и график
+        geochart.setDataTable(data);
         dashboard.bind(categoryFilter, geochart);
 
-        // Слушаем изменения ползунка для обновления данных
+        // Ползунок для выбора года
         document.getElementById('yearSlider').addEventListener('input', function() {
           var year = this.value;
-          // Обновляем фильтр Google Charts
+          // Обновляем фильтр Google Charts с выбранным годом
           categoryFilter.setState({ 'selectedValues': [year] });
-          dashboard.draw(data);
+          dashboard.draw(data);  // Рисуем обновлённый дашборд
         });
 
         dashboard.draw(data);
