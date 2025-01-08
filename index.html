@@ -3,21 +3,21 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {
-        'packages': ['geochart', 'table', 'controls']
+        'packages': ['geochart', 'controls']
       });
       google.charts.setOnLoadCallback(drawDashBoard); // Вызов функции отрисовки после загрузки
 
       function drawDashBoard() {
-        
         var dashboard = new google.visualization.Dashboard(
           document.getElementById('dashboard_div')
         );
 
+        // Фильтр для выбора года
         var categoryFilter = new google.visualization.ControlWrapper({
           'controlType': 'CategoryFilter',
           'containerId': 'filter_div',
           'options': {
-            'filterColumnIndex': 0,  // Указываем индекс столбца для года
+            'filterColumnIndex': 0,  // Индекс столбца для фильтрации (год)
             'ui': {
               'label': 'Select Year',
               'allowTyping': false,
@@ -26,25 +26,31 @@
           }
         });
 
+        // Карта для отображения индекса Джини
         var geochart = new google.visualization.ChartWrapper({
           'chartType': 'GeoChart',
           'containerId': 'chart_div',
           'dataSourceUrl': 'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
           encodeURIComponent('Sheet2') + '&headers=1&tq=',
-          'query':'SELECT A,B,C',
+          'query':'SELECT A,B,C',  // Запрашиваем данные: год, штат, индекс Джини
           'options': {
-            'title': 'Gini index',  // Запятая после 'title': 'Gini index'
             'region': 'BR',
             'displayMode': 'regions',
-            'resolution': 'provinces'
+            'resolution': 'provinces',
+            'colorAxis': {
+              'colors': ['#acb2b9', '#2f3f4f']
+            }
           }
         });
+        geochart.setQuery('SELECT A,B,C');
+console.log(geochart.getDataTable());
+
 
         // Связываем фильтр и карту
         dashboard.bind(categoryFilter, geochart);
-        
-        // Рисуем дашборд (переменная data не нужна)
-        dashboard.draw(geochart.getDataTable());
+
+        // Рисуем дашборд
+        dashboard.draw();
       }
     </script>
   </head>
