@@ -151,6 +151,16 @@
           dashboard.draw(data); 
         });
 
+        // Добавляем обработчик события для кросс-фильтрации по UF
+        google.visualization.events.addListener(geochart, 'select', function() {
+          var selectedItem = geochart.getChart().getSelection()[0];
+          if (selectedItem) {
+            var selectedUF = data.getValue(selectedItem.row, 1);
+            categoryFilter_1.setState({'selectedValues': [selectedUF]});
+            dashboard.draw(data);
+          }
+        });
+
         dashboard.draw(data);
       }
     </script>
