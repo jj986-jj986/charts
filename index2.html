@@ -1,0 +1,185 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+      body {
+        font-family: Georgia, serif;
+      }
+
+      /* Настройка слайдера для выбора года */
+      #yearSlider {
+        width: 300px;
+        height: 10px;
+        background-color: #ddd;
+        border-radius: 5px;
+        outline: none;
+        transition: background-color 0.3s;
+      }
+
+      #yearSlider:hover {
+        background-color: #bbb;
+      }
+
+      #yearSlider::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #8a3034;
+        cursor: pointer;
+      }
+
+      #yearSlider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #8a3034;
+        cursor: pointer;
+      }
+
+      /* Стили для текста фильтра */
+      label {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      /* Стили для отображения года */
+      #yearValue {
+        font-size: 16px;
+        font-weight: bold;
+        color: #000;
+        margin-left: 10px;
+      }
+
+      /* Выравнивание блоков с фильтрами и графиками */
+      #container {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      #filter_div_1, #chart_div_1 {
+        margin-left: 20px;
+      }
+    </style>
+    <script type="text/javascript">
+      google.charts.load('current', {
+        'packages': ['geochart', 'controls']
+      });
+      google.charts.setOnLoadCallback(drawSheetName);
+
+      function drawSheetName() {
+        var queryString = encodeURIComponent('SELECT A,B,C');
+
+        var query = new google.visualization.Query(
+          'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
+          encodeURIComponent('Sheet2') + '&headers=1&tq=' + queryString
+        );
+        query.send(handleSampleDataQueryResponse);
+      }
+
+      function handleSampleDataQueryResponse(response) {
+        if (response.isError()) {
+          alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+          return;
+        }
+        var data = response.getDataTable();
+
+        var dashboard = new google.visualization.Dashboard(
+          document.getElementById('dashboard_div')
+        );
+
+        var categoryFilter = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
+          'containerId': 'filter_div',
+          'options': {
+            'filterColumnIndex': 0,  // Индекс столбца для фильтрации по году
+            'ui': {
+              'label': 'Selected Year',
+              'allowTyping': false,
+              'allowMultiple': false
+            }
+          }
+        });
+        
+        var categoryFilter_1 = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
+          'containerId': 'filter_div_1',
+          'options': {
+            'filterColumnIndex': 1,  
+            'ui': {
+              'label': 'Selected UF',
+              'allowTyping': false,
+              'allowMultiple': false
+            }
+          }
+        });
+
+        var geochart = new google.visualization.ChartWrapper({
+          'chartType': 'GeoChart',
+          'containerId': 'chart_div',
+          'options': {
+            'region': 'BR',
+            'displayMode': 'regions',
+            'resolution': 'provinces',
+            'colorAxis': {
+              'colors': ['#acb2b9', '#2f3f4f']
+            }
+          },
+          'view': {'columns': [1,2]}
+        });
+
+        geochart.setDataTable(data);
+        dashboard.bind(categoryFilter, geochart);
+
+        var lineGraph = new google.visualization.ChartWrapper({
+          'chartType': 'LineChart',
+          'containerId': 'chart_div_1',
+          'options': {
+            title: "Gini Index Dynamics",
+            hAxis: { title: "Year" },
+            vAxis: { title: "Gini Index" }
+          },
+          'view': {'columns': [0,2]}
+        });
+        lineGraph.setDataTable(data);
+        dashboard.bind(categoryFilter_1, lineGraph);
+
+        // Таймлайн для выбора года
+        document.getElementById('yearSlider').addEventListener('click', function() {
+          var year = this.value;
+          // Обновляем фильтр Google Charts с выбранным годом
+          categoryFilter.setState({ 'selectedValues': [year] });
+          dashboard.draw(data); 
+        });
+
+        // Добавляем обработчик события для кросс-фильтрации по UF
+        google.visualization.events.addListener(geochart, 'select', function() {
+          var selectedItem = geochart.getChart().getSelection()[0];
+          if (selectedItem) {
+            var selectedUF = data.getValue(selectedItem.row, 1);
+            categoryFilter_1.setState({'selectedValues': [selectedUF]});
+            dashboard.draw(data);
+          }
+        });
+        categoryFilter.setState({ 'selectedValues': ['2010'] });
+        categoryFilter_1.setState({ 'selectedValues': ['Acre'] }); 
+
+        dashboard.draw(data);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="dashboard_div">
+        <div id="filter_div" style="width: 600px; height: 100px;"></div>
+        <div id="chart_div" style="width: 600px; height: 400px;"></div>
+      </div>
+      <div>
+        <div id="filter_div_1" style="width: 600px; height: 100px;"></div>
+        <div id="chart_div_1" style="width: 600px; height: 400px;"></div>
+      </div>
+    </div>
+    <label for="yearSlider">Year: 2010 </label>
+    <input type="range" id="yearSlider" min="2010" max="2021" value="2010">
+    <span id="yearValue">2021</span>
+  </body>
+</html>
