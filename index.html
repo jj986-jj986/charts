@@ -160,6 +160,8 @@
             dashboard.draw(data);
           }
         });
+        categoryFilter.setState({ 'selectedValues': ['2010'] });
+        categoryFilter_1.setState({ 'selectedValues': ['Acre'] }); 
 
         dashboard.draw(data);
       }
@@ -176,7 +178,7 @@
         <div id="chart_div_1" style="width: 600px; height: 400px;"></div>
       </div>
     </div>
-    <label for="yearSlider">Year:</label>
+    <label for="yearSlider">Year: 2010 </label>
     <input type="range" id="yearSlider" min="2010" max="2021" value="2010">
     <span id="yearValue">2021</span>
   </body>
