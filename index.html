@@ -3,8 +3,10 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <style>
       body {
-        font-family: Georgia, serif
-      };
+        font-family: Georgia, serif;
+      }
+
+      /* Настройка слайдера для выбора года */
       #yearSlider {
         width: 300px;
         height: 10px;
@@ -47,6 +49,16 @@
         color: #000;
         margin-left: 10px;
       }
+
+      /* Выравнивание блоков с фильтрами и графиками */
+      #container {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      #filter_div_1, #chart_div_1 {
+        margin-left: 20px;
+      }
     </style>
     <script type="text/javascript">
       google.charts.load('current', {
@@ -87,6 +99,19 @@
             }
           }
         });
+        
+        var categoryFilter_1 = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
+          'containerId': 'filter_div_1',
+          'options': {
+            'filterColumnIndex': 2,  
+            'ui': {
+              'label': 'Selected UF',
+              'allowTyping': false,
+              'allowMultiple': false
+            }
+          }
+        });
 
         var geochart = new google.visualization.ChartWrapper({
           'chartType': 'GeoChart',
@@ -105,7 +130,20 @@
         geochart.setDataTable(data);
         dashboard.bind(categoryFilter, geochart);
 
-        // Ползунок для выбора года
+        var lineGraph = new google.visualization.ChartWrapper({
+          'chartType': 'LineChart',
+          'containerId': 'chart_div_1',
+          'options': {
+            title: "Gini Index Dynamics",
+            hAxis: { title: "Year" },
+            vAxis: { title: "Gini Index" }
+          },
+          'view': {'columns': [0,2]}
+        });
+        lineGraph.setDataTable(data);
+        dashboard.bind(categoryFilter_1, lineGraph);
+
+        // Таймлайн для выбора года
         document.getElementById('yearSlider').addEventListener('input', function() {
           var year = this.value;
           // Обновляем фильтр Google Charts с выбранным годом
@@ -116,21 +154,20 @@
         dashboard.draw(data);
       }
     </script>
-
-    <style>
-      .google-visualization-control-range input[type="range"]::-webkit-slider-thumb {
-        background: #8a3034;
-      }  
-    </style>
   </head>
   <body>
-    <div id="dashboard_div">
-      <div id="filter_div" style="width: 900px; height: 100px;"></div>
-      <div id="chart_div" style="width: 900px; height: 400px;"></div>
+    <div id="container">
+      <div id="dashboard_div">
+        <div id="filter_div" style="width: 900px; height: 100px;"></div>
+        <div id="chart_div" style="width: 900px; height: 400px;"></div>
+      </div>
+      <div>
+        <div id="filter_div_1" style="width: 400px; height: 100px;"></div>
+        <div id="chart_div_1" style="width: 400px; height: 400px;"></div>
+      </div>
     </div>
-    <label for="yearSlider">Year: 2010</label>
+    <label for="yearSlider">Year:</label>
     <input type="range" id="yearSlider" min="2010" max="2021" value="2010">
     <span id="yearValue">2021</span>
   </body>
 </html>
-
