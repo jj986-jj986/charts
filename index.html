@@ -156,12 +156,12 @@ font-family: Georgia, serif;
               'colors': ['#d6bbbb', '#b55b5b']
             }
           },
-          'view': {'columns': [1,2]},
-          
+          'view': {'columns': [1,2]},  
         });
 
         geochart.setDataTable(data);
         dashboard.bind(categoryFilter, geochart);
+        geochart.draw()
 
         var lineGraph = new google.visualization.ChartWrapper({
           'chartType': 'LineChart',
@@ -177,6 +177,7 @@ font-family: Georgia, serif;
         });
         lineGraph.setDataTable(data);
         dashboard.bind(categoryFilter_1, lineGraph);
+        lineGraph.draw()
 
         // Таймлайн для выбора года
         document.getElementById('yearSlider').addEventListener('input', function() {
