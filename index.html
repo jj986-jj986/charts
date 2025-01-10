@@ -167,7 +167,7 @@ body {
         
         document.getElementById('yearSlider').addEventListener('input', function() {
           var year = this.value;
-          categoryFilter.setState({ 'selectedValues': [year] });
+          categoryFilter.setState({ 'selectedValues': [Number(year)] });
           document.getElementById('yearValue').textContent = year; 
           
           if (year) {
@@ -191,6 +191,7 @@ body {
             console.log(upd_data)
             structurePie.setDataTable(upd_data);          
             structurePie.draw();
+            geochart.draw()
             dashboard.draw()  
           }});
 
