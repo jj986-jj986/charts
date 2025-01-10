@@ -148,7 +148,7 @@ body {
             hAxis: { title: "Year" },
             vAxis: { title: "Gini Index" },
             colors: ['#a91919'],
-            legend: { position: 'bottom' }
+            legend: { position: 'top' }
           },
           'view': {'columns': [0,2]}
         });
@@ -225,6 +225,7 @@ body {
         
         categoryFilter.setState({ 'selectedValues': ['2010'] });
         categoryFilter_1.setState({ 'selectedValues': ['Acre'] }); 
+        structurePie.draw()
         dashboard.draw(data);
       }
   </script>
@@ -236,13 +237,13 @@ body {
   <main class="pure-g">
     <section class="pure-u-1 pure-u-md-1-2" id="left-column">
       <div id="filter_div" style="width: 600px; height: 10px;"></div>
-      <div id="chart_div" style="height: 70vh;"></div>
+      <div id="chart_div" style="height: 80vh;"></div>
     </section>
     
     <aside class="pure-u-1 pure-u-md-1-2" id="right-column">
       <div id="filter_div_1" style="width: 600px; height: 10px;"></div>
-      <div id="chart_div_1" style="height: 35vh;"></div>
-      <div id="chart_div_2" style="height: 35vh;"></div>
+      <div id="chart_div_1" style="height: 30vh;"></div>
+      <div id="chart_div_2" style="height: 40vh;"></div>
     </aside>
   </main>
 
