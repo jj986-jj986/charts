@@ -201,7 +201,7 @@ body {
           if (selectedItem) {
             var selectedUF = data.getValue(selectedItem.row, 1);
             categoryFilter_1.setState({'selectedValues': [selectedUF]});
-            dashboard.draw(data)
+            lineGraph.draw();
             var cur_year = categoryFilter.getState().selectedValues[0];
             var filtered = data.getFilteredRows([
               {column: 0, value: Number(cur_year)},
