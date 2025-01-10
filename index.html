@@ -158,6 +158,19 @@ font-family: Georgia, serif;
         dashboard.bind(categoryFilter_1, lineGraph);
         lineGraph.draw();
 
+                  
+        var structurePie = new google.visualization.ChartWrapper({
+          'chartType': 'PieChart',
+          'containerId': 'chart_div_2',
+          'options': {
+            backgroundColor: '#f5f5f5',
+            title: "Real GDP Structure",
+            colors: ['#66a26d', '#b55b5b', '#eed67d', '#4682b4', '#a9a9a9']
+          }});
+          structurePie.draw();
+          dashboard.draw(data); 
+        });
+
 
         // таймлайн для выбора года
         document.getElementById('yearSlider').addEventListener('input', function() {
@@ -187,18 +200,7 @@ font-family: Georgia, serif;
             structurePie.setDataTable(upd_data);          
             structurePie.draw()
           };
-          
-        var structurePie = new google.visualization.ChartWrapper({
-          'chartType': 'PieChart',
-          'containerId': 'chart_div_2',
-          'options': {
-            backgroundColor: '#f5f5f5',
-            title: "Real GDP Structure",
-            colors: ['#66a26d', '#b55b5b', '#eed67d', '#4682b4', '#a9a9a9']
-          }});
-          structurePie.draw();
-          dashboard.draw(data); 
-        });
+
 
         // кросс-фильтрация карта->линейный график+пайчарт по UF
         google.visualization.events.addListener(geochart, 'select', function() {
