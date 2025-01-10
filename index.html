@@ -169,10 +169,7 @@ font-family: Georgia, serif;
           }});
           structurePie.draw();
           dashboard.draw(data); 
-        });
-
-
-        // таймлайн для выбора года
+        
         document.getElementById('yearSlider').addEventListener('input', function() {
           var year = this.value;
           categoryFilter.setState({ 'selectedValues': [year] });
