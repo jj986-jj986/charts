@@ -63,6 +63,32 @@ font-family: Georgia, serif;
       height: 100%;
     }
   </style>
+</head>
+<body>
+  <header class="pure-u-1">
+    <label for="chart_div">Gini Index by State</label>
+  </header>
+
+  <main class="pure-g">
+    <section class="pure-u-1 pure-u-md-2-3" id="left-column">
+      <div id="chart_div" style="height: 60vh;"></div>
+    </section>
+    
+    <aside class="pure-u-1 pure-u-md-1-3" id="right-column">
+      <div id="chart_div_1" style="height: 25vh;"></div>
+      <div id="chart_div_2" style="height: 35vh;"></div>
+    </aside>
+  </main>
+
+  <footer class="pure-u-1">
+    <label for="yearSlider">Year: </label>
+    <span id="yearValue">2010</span>
+    <input type="range" id="yearSlider" min="2010" max="2021" value="2010">
+  </footer>
+
+  <!-- Ваши скрипты и Google Charts -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  
   <script>
     google.charts.load('current', {
         'packages': ['geochart', 'controls']
@@ -228,30 +254,5 @@ font-family: Georgia, serif;
         dashboard.draw(data);
       }
   </script>
-</head>
-<body>
-  <header class="pure-u-1">
-    <label for="chart_div">Gini Index by State</label>
-  </header>
-
-  <main class="pure-g">
-    <section class="pure-u-1 pure-u-md-2-3" id="left-column">
-      <div id="chart_div" style="height: 60vh;"></div>
-    </section>
-    
-    <aside class="pure-u-1 pure-u-md-1-3" id="right-column">
-      <div id="chart_div_1" style="height: 25vh;"></div>
-      <div id="chart_div_2" style="height: 35vh;"></div>
-    </aside>
-  </main>
-
-  <footer class="pure-u-1">
-    <label for="yearSlider">Year: </label>
-    <span id="yearValue">2010</span>
-    <input type="range" id="yearSlider" min="2010" max="2021" value="2010">
-  </footer>
-
-  <!-- Ваши скрипты и Google Charts -->
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </body>
 </html>
