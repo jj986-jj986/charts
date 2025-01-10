@@ -65,30 +65,6 @@ font-family: Georgia, serif;
       height: 100%;
     }
   </style>
-</head>
-<body>
-  <header class="pure-u-1">
-    <label for="chart_div">Gini Index by State</label>
-  </header>
-
-  <main class="pure-g">
-    <section class="pure-u-1 pure-u-md-1-2" id="left-column">
-      <div id="filter_div" style="width: 600px; height: 10px;"></div>
-      <div id="chart_div" style="height: 60vh;"></div>
-    </section>
-    
-    <aside class="pure-u-1 pure-u-md-1-2" id="right-column">
-      <div id="filter_div_1" style="width: 600px; height: 10px;"></div>
-      <div id="chart_div_1" style="height: 25vh;"></div>
-      <div id="chart_div_2" style="height: 35vh;"></div>
-    </aside>
-  </main>
-
-  <footer class="pure-u-1">
-    <label for="yearSlider">Year: </label>
-    <span id="yearValue">2010</span>
-    <input type="range" id="yearSlider" min="2010" max="2021" value="2010">
-  </footer>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   
   <script>
@@ -183,7 +159,7 @@ font-family: Georgia, serif;
         lineGraph.draw();
 
 
-        // Таймлайн для выбора года
+        // таймлайн для выбора года
         document.getElementById('yearSlider').addEventListener('input', function() {
           var year = this.value;
           categoryFilter.setState({ 'selectedValues': [year] });
@@ -224,7 +200,7 @@ font-family: Georgia, serif;
           dashboard.draw(data); 
         });
 
-        // Добавляем обработчик события для кросс-фильтрации по UF
+        // кросс-фильтрация карта->линейный график+пайчарт по UF
         google.visualization.events.addListener(geochart, 'select', function() {
           var selectedItem = geochart.getChart().getSelection()[0];
           if (selectedItem) {
@@ -256,17 +232,40 @@ font-family: Georgia, serif;
         categoryFilter.setState({ 'selectedValues': ['2010'] });
         categoryFilter_1.setState({ 'selectedValues': ['Acre'] }); 
 
-          var structurePie = new google.visualization.ChartWrapper({
+        var structurePie = new google.visualization.ChartWrapper({
           'chartType': 'PieChart',
           'containerId': 'chart_div_2',
           'options': {
             backgroundColor: '#f5f5f5',
             title: "Real GDP Structure",
             colors: ['#66a26d', '#b55b5b', '#eed67d', '#4682b4', '#a9a9a9']
-          }});
+          }});  
         
         dashboard.draw(data);
       }
   </script>
-</body>
+</head>
+<body>
+  <header class="pure-u-1">
+    <label for="chart_div">Gini Index by State</label>
+  </header>
+  <main class="pure-g">
+    <section class="pure-u-1 pure-u-md-1-2" id="left-column">
+      <div id="filter_div" style="width: 600px; height: 10px;"></div>
+      <div id="chart_div" style="height: 60vh;"></div>
+    </section>
+    
+    <aside class="pure-u-1 pure-u-md-1-2" id="right-column">
+      <div id="filter_div_1" style="width: 600px; height: 10px;"></div>
+      <div id="chart_div_1" style="height: 25vh;"></div>
+      <div id="chart_div_2" style="height: 35vh;"></div>
+    </aside>
+  </main>
+
+  <footer class="pure-u-1">
+    <label for="yearSlider">Year: </label>
+    <span id="yearValue">2010</span>
+    <input type="range" id="yearSlider" min="2010" max="2021" value="2010">
+  </footer>
+  </body>
 </html>
