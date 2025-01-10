@@ -260,21 +260,27 @@ font-family: Georgia, serif;
     </script>
   </head>
   <body>
+  <header>
+    <label for="chart_div">Gini Index by State</label>
+  </header>
+
+  <main>
     <div id="container">
-      <div id="dashboard_div">
-        <div id="filter_div" style="width: 600px; height: 100px;"></div>
-        <label for="chart_div" style="text-align:center; left: 25%; font-weight: bold;">Gini Index by State</label>
-        <div id="chart_div" style="width: 600px; height: 600px;"></div>
-      </div>
-      <div>
-        <div id="filter_div_1" style="width: 600px; height: 100px;"></div>
-        <div id="chart_div_1" style="width: 600px; height: 200px;"></div>
-        <div id="chart_div_2" style="width: 600px; height: 400px;"></div>
-      </div>
+      <section id="left-column">
+        <div id="chart_div" style="height: 60vh;"></div>
+      </section>
+      <aside id="right-column">
+        <div id="chart_div_1" style="height: 25vh;"></div>
+        <div id="chart_div_2" style="height: 35vh;"></div>
+      </aside>
     </div>
+  </main>
+
+  <footer>
     <label for="yearSlider">Year: </label>
     <span id="yearValue">2010</span>
     <input type="range" id="yearSlider" min="2010" max="2021" value="2010">
-    
-  </body>
+  </footer>
+</body>
+
 </html>
