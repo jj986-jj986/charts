@@ -163,7 +163,7 @@ body {
             title: "Real GDP Structure",
             colors: ['#66a26d', '#b55b5b', '#eed67d', '#4682b4', '#a9a9a9']
           }});
-                
+
         document.getElementById('yearSlider').addEventListener('input', function() {
           var year = this.value;
           categoryFilter.setState({ 'selectedValues': [year] });
@@ -194,17 +194,16 @@ body {
           dashboard.draw(data); 
         });
 
-
-        // кросс-фильтрация карта->линейный график+пайчарт по UF
+        // Добавляем обработчик события для кросс-фильтрации по UF
         google.visualization.events.addListener(geochart, 'select', function() {
           var selectedItem = geochart.getChart().getSelection()[0];
           if (selectedItem) {
             var selectedUF = data.getValue(selectedItem.row, 1);
             categoryFilter_1.setState({'selectedValues': [selectedUF]});
-            lineGraph.draw();
+            dashboard.draw(data)
             var cur_year = categoryFilter.getState().selectedValues[0];
             var filtered = data.getFilteredRows([
-              {column: 0, value: Number(cur_year)},
+              {column: 0, value: cur_year},
               {column: 1, value: selectedUF}
             ]);
             var upd_data = new google.visualization.DataTable();
@@ -220,15 +219,24 @@ body {
               ])}
             structurePie.setDataTable(upd_data);          
             structurePie.draw()
+            dashboard.draw();
           }
-          dashboard.draw();
         });
-        
-        categoryFilter_1.setState({ 'selectedValues': ['Acre'] });
         categoryFilter.setState({ 'selectedValues': ['2010'] });
-        structurePie.draw(data_upd)
+        categoryFilter_1.setState({ 'selectedValues': ['Acre'] }); 
+        
+        var structurePie = new google.visualization.ChartWrapper({
+          'chartType': 'PieChart',
+          'containerId': 'chart_div_2',
+          'options': {
+            backgroundColor: '#f5f5f5',
+            title: "Real GDP Structure",
+            colors: ['#66a26d', '#b55b5b', '#eed67d', '#4682b4', '#a9a9a9']
+          }});
+
         dashboard.draw(data);
       }
+        
   </script>
 </head>
 <body>
