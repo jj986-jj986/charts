@@ -22,8 +22,6 @@ body {
   margin: 20px; /* отступы по всему телу */
   padding: 15px;
 }       
-
-      /* Настройка слайдера для выбора года */
       #yearSlider {
         width: 300px;
         height: 10px;
@@ -156,6 +154,15 @@ body {
         lineGraph.setDataTable(data);
         dashboard.bind(categoryFilter_1, lineGraph);
         lineGraph.draw();
+        
+        var structurePie = new google.visualization.ChartWrapper({
+          'chartType': 'PieChart',
+          'containerId': 'chart_div_2',
+          'options': {
+            backgroundColor: '#f5f5f5',
+            title: "Real GDP Structure",
+            colors: ['#66a26d', '#b55b5b', '#eed67d', '#4682b4', '#a9a9a9']
+          }});
                 
         document.getElementById('yearSlider').addEventListener('input', function() {
           var year = this.value;
@@ -219,15 +226,7 @@ body {
         
         categoryFilter.setState({ 'selectedValues': ['2010'] });
         categoryFilter_1.setState({ 'selectedValues': ['Acre'] }); 
-         var structurePie = new google.visualization.ChartWrapper({
-          'chartType': 'PieChart',
-          'containerId': 'chart_div_2',
-          'options': {
-            backgroundColor: '#f5f5f5',
-            title: "Real GDP Structure",
-            colors: ['#66a26d', '#b55b5b', '#eed67d', '#4682b4', '#a9a9a9']
-          }});
-        structurePie.draw()
+        structurePie.draw(data_upd)
         dashboard.draw(data);
       }
   </script>
