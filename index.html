@@ -8,6 +8,55 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css">
   <style>
+        :root {
+  --primary-color: #2f3f4f;
+  --secondary-color: #acb2b9;
+  --accent-color: #8a3034;
+  --background-color: #f5f5f5;
+  --font-color: #333;
+}
+body {
+  background-color: var(--background-color);
+  color: var(--font-color);
+font-family: Georgia, serif;
+      }
+      label[for="chart_div"] {
+      left: 25%;
+      transform: translateX(-50%);
+    }
+
+      /* Настройка слайдера для выбора года */
+      #yearSlider {
+        width: 300px;
+        height: 10px;
+        background-color: #ddd;
+        border-radius: 5px;
+        outline: none;
+        transition: background-color 0.3s;
+      }
+
+      #yearSlider:hover {
+        background-color: #bbb;
+      }
+
+      #yearSlider::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #8a3034;
+        cursor: pointer;
+      }
+
+      #yearSlider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #8a3034;
+        cursor: pointer;
+      } 
+      #filter_div_1, #chart_div_1 {
+        margin-left: 20px;
+      }
     /* Ваши дополнительные стили для графиков и других элементов */
     #chart_div, #chart_div_1, #chart_div_2 {
       width: 100%;
@@ -40,7 +89,168 @@
   <!-- Ваши скрипты и Google Charts -->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script>
-    // Код для инициализации графиков и других элементов
+    google.charts.load('current', {
+        'packages': ['geochart', 'controls']
+      });
+      google.charts.setOnLoadCallback(drawSheetName);
+
+      function drawSheetName() {
+        var queryString = encodeURIComponent('SELECT A,B,C,D,E,F,G,I');
+
+        var query = new google.visualization.Query(
+          'https://docs.google.com/spreadsheets/d/1RORwncs0WaVaq2YecdBS0bZ09ouILOTzTt-DmYtdPFw/gviz/tq?sheet=' + 
+          encodeURIComponent('Sheet2') + '&headers=1&tq=' + queryString
+        );
+        query.send(handleSampleDataQueryResponse);
+      }
+
+      function handleSampleDataQueryResponse(response) {
+        if (response.isError()) {
+          alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+          return;
+        }
+        var data = response.getDataTable();
+
+        var dashboard = new google.visualization.Dashboard(
+          document.getElementById('dashboard_div')
+        );
+
+        var categoryFilter = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
+          'containerId': 'filter_div',
+          'options': {
+            'filterColumnIndex': 0,  // Индекс столбца для фильтрации по году
+            'ui': {
+              'label': 'Selected Year',
+              'allowTyping': false,
+              'allowMultiple': false
+            }
+          }
+        });
+        
+        var categoryFilter_1 = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
+          'containerId': 'filter_div_1',
+          'options': {
+            'filterColumnIndex': 1,  
+            'ui': {
+              'label': 'Selected UF',
+              'allowTyping': false,
+              'allowMultiple': false
+            }
+          }
+        });
+
+        var geochart = new google.visualization.ChartWrapper({
+          'chartType': 'GeoChart',
+          'containerId': 'chart_div',
+          'options': {
+            title: "Gini Index by State",
+            backgroundColor: {
+              fill:'#eeeeee',
+            strokeWidth: 3},
+            'region': 'BR',
+            'displayMode': 'regions',
+            'resolution': 'provinces',
+            'colorAxis': {
+              'colors': ['#d6bbbb', '#b55b5b']
+            }
+          },
+          'view': {'columns': [1,2]},
+          
+        });
+
+        geochart.setDataTable(data);
+        dashboard.bind(categoryFilter, geochart);
+
+        var lineGraph = new google.visualization.ChartWrapper({
+          'chartType': 'LineChart',
+          'containerId': 'chart_div_1',
+          'options': {
+            title: "Gini Index Dynamics",
+            backgroundColor: '#f5f5f5',
+            hAxis: { title: "Year" },
+            vAxis: { title: "Gini Index" },
+            colors: ['#a91919']
+          },
+          'view': {'columns': [0,2]}
+        });
+        lineGraph.setDataTable(data);
+        dashboard.bind(categoryFilter_1, lineGraph);
+
+        // Таймлайн для выбора года
+        document.getElementById('yearSlider').addEventListener('input', function() {
+          var year = this.value;
+          categoryFilter.setState({ 'selectedValues': [year] });
+          document.getElementById('yearValue').textContent = year; 
+          
+          if (year) {
+            var cur_UF = categoryFilter_1.getState().selectedValues[0];
+            console.log(year, cur_UF)
+            var filtered = data.getFilteredRows([
+              {column: 0, value: Number(year)},
+              {column: 1, value: cur_UF}
+            ]);
+            var upd_data = new google.visualization.DataTable();
+            upd_data.addColumn('string', 'Sector');
+            upd_data.addColumn('number', 'Value');
+            if (filtered.length > 0) {
+              upd_data.addRows([
+                ['Agriculture', data.getValue(filtered[0], 3)],
+                ['Industry', data.getValue(filtered[0], 4)],
+                ['Services', data.getValue(filtered[0], 5)],
+                ['Public Sector', data.getValue(filtered[0], 6)],
+                ['Others', data.getValue(filtered[0], 7)]
+              ])}
+            console.log(upd_data)
+            structurePie.setDataTable(upd_data);          
+            structurePie.draw()
+          }
+          dashboard.draw(data); 
+        });
+
+        // Добавляем обработчик события для кросс-фильтрации по UF
+        google.visualization.events.addListener(geochart, 'select', function() {
+          var selectedItem = geochart.getChart().getSelection()[0];
+          if (selectedItem) {
+            var selectedUF = data.getValue(selectedItem.row, 1);
+            categoryFilter_1.setState({'selectedValues': [selectedUF]});
+            dashboard.draw(data)
+            var cur_year = categoryFilter.getState().selectedValues[0];
+            var filtered = data.getFilteredRows([
+              {column: 0, value: cur_year},
+              {column: 1, value: selectedUF}
+            ]);
+            var upd_data = new google.visualization.DataTable();
+            upd_data.addColumn('string', 'Sector');
+            upd_data.addColumn('number', 'Value');
+            if (filtered.length > 0) {
+              upd_data.addRows([
+                ['Agriculture', data.getValue(filtered[0], 3)],
+                ['Industry', data.getValue(filtered[0], 4)],
+                ['Services', data.getValue(filtered[0], 5)],
+                ['Public Sector', data.getValue(filtered[0], 6)],
+                ['Others', data.getValue(filtered[0], 7)]
+              ])}
+            structurePie.setDataTable(upd_data);          
+            structurePie.draw()
+            dashboard.draw();
+          }
+        });
+        categoryFilter.setState({ 'selectedValues': ['2010'] });
+        categoryFilter_1.setState({ 'selectedValues': ['Acre'] }); 
+        
+        var structurePie = new google.visualization.ChartWrapper({
+          'chartType': 'PieChart',
+          'containerId': 'chart_div_2',
+          'options': {
+            backgroundColor: '#f5f5f5',
+            title: "Real GDP Structure",
+            colors: ['#66a26d', '#b55b5b', '#eed67d', '#4682b4', '#a9a9a9']
+          }});
+
+        dashboard.draw(data);
+      }
   </script>
 </body>
 </html>
