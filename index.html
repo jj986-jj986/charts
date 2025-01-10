@@ -229,7 +229,7 @@ font-family: Georgia, serif;
             dashboard.draw(data)
             var cur_year = categoryFilter.getState().selectedValues[0];
             var filtered = data.getFilteredRows([
-              {column: 0, value: cur_year},
+              {column: 0, value: Number(cur_year)},
               {column: 1, value: selectedUF}
             ]);
             var upd_data = new google.visualization.DataTable();
