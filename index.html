@@ -231,16 +231,6 @@ font-family: Georgia, serif;
         
         categoryFilter.setState({ 'selectedValues': ['2010'] });
         categoryFilter_1.setState({ 'selectedValues': ['Acre'] }); 
-
-        var structurePie = new google.visualization.ChartWrapper({
-          'chartType': 'PieChart',
-          'containerId': 'chart_div_2',
-          'options': {
-            backgroundColor: '#f5f5f5',
-            title: "Real GDP Structure",
-            colors: ['#66a26d', '#b55b5b', '#eed67d', '#4682b4', '#a9a9a9']
-          }});  
-        
         dashboard.draw(data);
       }
   </script>
