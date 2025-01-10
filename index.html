@@ -36,40 +36,7 @@
             margin-top: 20px;
         }
     </style>
-</head>
-<body>
-
-    <div class="pure-g">
-        <header class="pure-u-1">
-            <h1>Gini Index Dashboard</h1>
-        </header>
-
-        <main class="pure-u-1 pure-g">
-            <!-- Chart Container: Left -->
-            <section class="pure-u-1 pure-u-md-1-2">
-                <div id="chart_div" class="pure-u">
-                    <!-- Google Map Chart will be inserted here -->
-                </div>
-            </section>
-
-            <!-- Chart Containers: Right -->
-            <aside class="pure-u-1 pure-u-md-1-2">
-                <div id="chart_div_1" class="pure-u">
-                    <!-- Line Chart will be inserted here -->
-                </div>
-                <div id="chart_div_2" class="pure-u">
-                    <!-- Pie Chart will be inserted here -->
-                </div>
-            </aside>
-        </main>
-
-        <footer>
-            <label for="yearSlider">Year: </label>
-            <span id="yearValue">2010</span>
-            <input type="range" id="yearSlider" min="2010" max="2021" value="2010">
-        </footer>
-    </div>
-
+    
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         google.charts.load('current', {
@@ -223,6 +190,38 @@
             });
         }
     </script>
+</head>
+<body>
 
+    <div class="pure-g">
+        <header class="pure-u-1">
+            <h1>Gini Index Dashboard</h1>
+        </header>
+
+        <main class="pure-u-1 pure-g">
+            <!-- Chart Container: Left -->
+            <section class="pure-u-1 pure-u-md-1-2">
+                <div id="chart_div" class="pure-u">
+                    <!-- Google Map Chart will be inserted here -->
+                </div>
+            </section>
+
+            <!-- Chart Containers: Right -->
+            <aside class="pure-u-1 pure-u-md-1-2">
+                <div id="chart_div_1" class="pure-u">
+                    <!-- Line Chart will be inserted here -->
+                </div>
+                <div id="chart_div_2" class="pure-u">
+                    <!-- Pie Chart will be inserted here -->
+                </div>
+            </aside>
+        </main>
+
+        <footer>
+            <label for="yearSlider">Year: </label>
+            <span id="yearValue">2010</span>
+            <input type="range" id="yearSlider" min="2010" max="2021" value="2010">
+        </footer>
+    </div>
 </body>
 </html>
