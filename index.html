@@ -200,6 +200,7 @@ body {
           if (selectedItem) {
             var selectedUF = data.getValue(selectedItem.row, 1);
             categoryFilter_1.setState({'selectedValues': [selectedUF]});
+            document.getElementById('stateValue').textContent = selectedUF;
             dashboard.draw(data)
             var cur_year = categoryFilter.getState().selectedValues[0];
             var filtered = data.getFilteredRows([
@@ -255,6 +256,7 @@ body {
     
     <aside class="pure-u-1 pure-u-md-1-2" id="right-column">
       <div id="filter_div_1" style="width: 600px; height: 10px;"></div>
+      <span id="stateValue">Acre</span>
       <div id="chart_div_1" style="height: 30vh;"></div>
       <div id="chart_div_2" style="height: 40vh;"></div>
     </aside>
