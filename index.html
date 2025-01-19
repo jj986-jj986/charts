@@ -49,7 +49,14 @@ body {
         border-radius: 50%;
         background-color: #8a3034;
         cursor: pointer;
-      } 
+      }
+    #stateValue {
+      font-weight: bold;
+    }
+    .selected {
+      margin-top: 10px;
+    }
+    
       #filter_div_1, #chart_div_1 {
         margin-left: 20px;
       }
@@ -256,7 +263,7 @@ body {
     
     <aside class="pure-u-1 pure-u-md-1-2" id="right-column">
       <div id="filter_div_1" style="width: 600px; height: 10px;"></div>
-      <span id="stateValue">Acre</span>
+      <div class="selected">selected: <span id="stateValue">Acre</span></div>
       <div id="chart_div_1" style="height: 30vh;"></div>
       <div id="chart_div_2" style="height: 40vh;"></div>
     </aside>
