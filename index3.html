@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Графики</title>
+  <title>GDP per capita</title>
   
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/base-min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-min.css">
@@ -77,7 +77,7 @@ body {
       google.charts.setOnLoadCallback(drawSheetName);
 
       function drawSheetName() {
-        var queryString = encodeURIComponent('SELECT A,B,C,D,E,F,G,I');
+        var queryString = encodeURIComponent('SELECT *');
 
         var query = new google.visualization.Query(
           'https://docs.google.com/spreadsheets/d/1wWmrg5Ok2nKKbmvxxbMCxsAA_sMFJjmQZFXhxN7ZSGA/gviz/tq?sheet=' 
@@ -127,7 +127,7 @@ body {
           'chartType': 'GeoChart',
           'containerId': 'chart_div',
           'options': {
-            title: "Gini Index by State",
+            title: "GDP per capita by State",
             backgroundColor: {
               fill:'#eeeeee',
             strokeWidth: 3},
@@ -230,7 +230,7 @@ body {
             dashboard.draw();
           }
         });
-        categoryFilter.setState({ 'selectedValues': ['2010'] });
+        categoryFilter.setState({ 'selectedValues': ['2002'] });
         categoryFilter_1.setState({ 'selectedValues': ['Acre'] }); 
         
         var structurePie = new google.visualization.ChartWrapper({
@@ -274,8 +274,8 @@ body {
 
   <footer class="pure-u-1">
     <label for="yearSlider">Year: </label>
-    <span id="yearValue">2010</span>
-    <input type="range" id="yearSlider" min="2010" max="2021" value="2010">
+    <span id="yearValue">2002</span>
+    <input type="range" id="yearSlider" min="2002" max="2021" value="2002">
   </footer>
   </body>
 </html>
