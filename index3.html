@@ -175,7 +175,7 @@ body {
           var year = this.value;
           categoryFilter.setState({ 'selectedValues': [year] });
           document.getElementById('yearValue').textContent = year; 
-          
+          dashboard.draw(data)
           if (year) {
             var cur_UF = categoryFilter_1.getState().selectedValues[0];
             console.log(year, cur_UF)
