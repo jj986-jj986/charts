@@ -149,10 +149,10 @@ body {
           'chartType': 'LineChart',
           'containerId': 'chart_div_1',
           'options': {
-            title: "Gini Index Dynamics",
+            title: "GDP per capita Dynamics",
             backgroundColor: '#f5f5f5',
             hAxis: { title: "Year" },
-            vAxis: { title: "Gini Index" },
+            vAxis: { title: "GDP per capita" },
             colors: ['#a91919'],
             legend: { position: 'top' }
           },
@@ -171,7 +171,7 @@ body {
             colors: ['#66a26d', '#b55b5b', '#eed67d', '#4682b4', '#a9a9a9']
           }});
 
-        document.getElementById('yearSlider').addEventListener('input', function() {
+        document.getElementById('Slider').addEventListener('input', function() {
           var year = this.value;
           categoryFilter.setState({ 'selectedValues': [year] });
           document.getElementById('yearValue').textContent = year; 
@@ -275,7 +275,7 @@ body {
   <footer class="pure-u-1">
     <label for="yearSlider">Year: </label>
     <span id="yearValue">2002</span>
-    <input type="range" id="yearSlider" min="2002" max="2021" value="2002">
+    <input type="range" id="Slider" min="2002" max="2021" value="2002">
   </footer>
   </body>
 </html>
