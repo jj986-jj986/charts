@@ -200,14 +200,13 @@ body {
           dashboard.draw(data); 
         });
 
-        // Добавляем обработчик события для кросс-фильтрации по UF
+        
         google.visualization.events.addListener(geochart, 'select', function() {
           var selectedItem = geochart.getChart().getSelection()[0];
           if (selectedItem) {
             var selectedUF = data.getValue(selectedItem.row, 1);
             categoryFilter_1.setState({'selectedValues': [selectedUF]});
             document.getElementById('stateValue').textContent = selectedUF;
-            dashboard.draw(data)
             var cur_year = categoryFilter.getState().selectedValues[0];
             var filtered = data.getFilteredRows([
               {column: 0, value: cur_year},
