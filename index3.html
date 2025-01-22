@@ -196,9 +196,8 @@ body {
             console.log(upd_data)
             structurePie.setDataTable(upd_data);          
             structurePie.draw()
-          }
-          dashboard.draw(data); 
-        });
+            dashboard.draw()
+          }});
 
         
         google.visualization.events.addListener(geochart, 'select', function() {
