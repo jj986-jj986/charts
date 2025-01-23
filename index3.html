@@ -81,7 +81,7 @@ body {
 
         var query = new google.visualization.Query (
           'https://docs.google.com/spreadsheets/d/1wWmrg5Ok2nKKbmvxxbMCxsAA_sMFJjmQZFXhxN7ZSGA/gviz/tq?sheet='+
-          encodeURIComponent('Sheet3') + '&headers=1&tq=' + queryString
+          encodeURIComponent('page') + '&headers=1&tq=' + queryString
         );
         query.send(handleSampleDataQueryResponse);
       }
@@ -200,7 +200,7 @@ body {
           }});
 
         
-        google.visualization.events.addListener(geochart, 'select', function() {
+        google.visualization.events.addListener(geochart, 'click', function() {
           var selectedItem = geochart.getChart().getSelection()[0];
           if (selectedItem) {
             var selectedUF = data.getValue(selectedItem.row, 1);
