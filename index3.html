@@ -206,7 +206,7 @@ body {
             var selectedUF = data.getValue(selectedItem.row, 1);
             categoryFilter_1.setState({'selectedValues': [selectedUF]});
             document.getElementById('stateValue').textContent = selectedUF;
-            dashboard.draw();
+            geochart.draw();
             var cur_year = categoryFilter.getState().selectedValues[0];
             var filtered = data.getFilteredRows([
               {column: 0, value: cur_year},
