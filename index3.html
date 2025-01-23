@@ -200,7 +200,7 @@ body {
           }});
 
         
-        google.visualization.events.addListener(geochart, 'click', function() {
+        google.visualization.events.addListener(geochart, 'select', function() {
           var selectedItem = geochart.getChart().getSelection()[0];
           if (selectedItem) {
             var selectedUF = data.getValue(selectedItem.row, 1);
