@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Графики</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/base-min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css">
+    <style>
+       :root {
+  --primary-color: #2f3f4f;
+  --secondary-color: #acb2b9;
+  --accent-color: #8a3034;
+  --background-color: #f5f5f5;
+  --font-color: #333;
+}
+body {
+  background-color: var(--background-color);
+  color: var(--font-color);
+  margin: 20px; /* отступы по всему телу */
+  padding: 15px;
+}
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {
+        'packages': ['sankey']
+      });
+      google.charts.setOnLoadCallback(drawSheetName);
+    function drawSheetName() {
+        var queryString = encodeURIComponent('SELECT A,B,C,D');
+
+        var query = new google.visualization.Query(
+'https://docs.google.com/spreadsheets/d/1_71CjAApUofNJys2yoLBe___qvbiA7TRVix1642vAKQ/gviz/tq?sheet=' + 
+          encodeURIComponent('Sheet1') + '&headers=1&tq=' + queryString
+        );
+        query.send(handleSampleDataQueryResponse);
+      }
+
+      function handleSampleDataQueryResponse(response) {
+        if (response.isError()) {
+          alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+          return;
+        }
+        var data = response.getDataTable();
+        console.log(data)
+        
+        var colors = ['#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f',
+                  '#cab2d6', '#ffff99', '#1f78b4', '#33a02c']
+
+        var options = {
+          width: 1000,
+          sankey: {
+        link: {
+          colorMode: 'gradient'
+          }
+      }
+        };
+
+        // Instantiates and draws our chart, passing in some options.
+        var chart = new google.visualization.Sankey(document.getElementById('sankey_basic'));
+        chart.draw(data, options);
+      }
+        </script>
+  </head>
+  <body>
+    <nav>
+        <a href="index.html">Gini Index</a>
+      <a href="index3.html">GDP per capita</a>
+        <a href="index2.html">Migrations</a>
+    </nav>
+    <header class="pure-u-1">
+    <label for="chart_div">Number of internal migrants</label>
+  </header>
+  <main class="pure-g">
+    <section class="pure-u-1 pure-u-md-1-2" id="left-column">
+    <div id="sankey_basic" style="width: 1200px; height: 1200px;"></div>
+    </section>
+  </main>
+  </body>
+  </html>
